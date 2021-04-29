@@ -54,31 +54,41 @@ def gauss_seidel(A,b,x0,tol,N):
         x0 = np.copy(x)  
     raise NameError("num. max. de iteracoes excedido.")
 
-def eliminacaoGauss(matriz):
-    for k in range(0,5):
-        for i in range(k+1, 6):
-            temp = matriz[i][k]/matriz[k][k]
-            print(temp)
-		
 
 def main():
     matriz = np.loadtxt("matriz.txt", dtype="int")
+    # forma matricial do sistema Ax = b
    
-    A = np.array([[3,1,-1],  
+    # Matriz dos coeficientes
+    A = np.array([[3,1,-1],     
                [-1,-4,1],  
                [1,-2,5]],  
-               dtype="double")  
-    D = np.diag(np.diag(A))  
-    L = np.tril(A)-D  
-    U=np.triu(A)-D
+               dtype="double") 
+                
+    # Vetor dos termos constantes  
+    b = np.array([2, -10, 0], dtype="double") 
 
-    print(A)
-    print(D)
-    print(L)
-    print(U)
+    print("Matriz A: \n", A, "\n") 
+    print("Vetor b: \n", b, "\n") 
 
-    J = -np.linalg.inv(D).dot(L+U);  
-    cJ = np.linalg.inv(D).dot(b);
+    D = np.diag(np.diag(A))     # matriz diagonal
+    L = np.tril(A)-D            # matriz triangular inferior
+    U=np.triu(A)-D              # matriz triangular superior
+    
+    print("Matriz D: \n", D, "\n") 
+    print("Matriz L: \n", L, "\n") 
+    print("Matriz U: \n", U, "\n") 
+
+    # Jacobi
+    J = -np.linalg.inv(D).dot(L+U)      # Matriz de iteração Tj
+    cJ = np.linalg.inv(D).dot(b)        # vetor de iteração cj
+
+    print("Matriz J: \n", J, "\n")
+    print("Vetor cJ: \n", cJ, "\n")
+
+    # Gauss-Seidel
+    TG = -np.linalg.inv(L+D).dot(U)     # Matriz de iteração Tg
+    cG = np.linalg.inv(L+D).dot(b)      # vetor de iteração cG
 
 if __name__ == '__main__':
     main()
