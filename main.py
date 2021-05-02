@@ -1,28 +1,29 @@
 from __future__ import division
 from numpy import linalg
 import numpy as np
+import jacobi_csr as jcsr
 
-def jacobi_csr(aa, jr, jc, b, tol, N):
-    it = 0 ### ou 1
-    total_linhas = len(jc)
-    x = [np.zeros(total_linhas),np.zeros(total_linhas)]
-    while it < N:
-        cont = 0
-        for i in range(1,total_linhas): # ordem -> poderia ser ordem de linha
-            total_elementos_linha = jc[i+1]-jc[i]
-            j = total_elementos_linha ## nao sabemos se faz diferença
-            for ii in range(1, total_elementos_linha):
-                cont = cont+1
-                if jr[cont] != i:
-                    x[1][i] -= x[0][jr[cont]]*aa[cont]
-                else:
-                    x[1][i] += b[i]
-                    j = cont
-            x[1][i] /= aa[j]
-        if np.linalg.norm(x[1] - x[0], np.inf) < tol:
-            return x
-        x[0] = x[1]
-        it += 1
+# def jacobi_csr(aa, jr, jc, b, tol, N):
+#     it = 0 ### ou 1
+#     total_linhas = len(jc)
+#     x = [np.zeros(total_linhas),np.zeros(total_linhas)]
+#     while it < N:
+#         cont = 0
+#         for i in range(1,total_linhas): # ordem -> poderia ser ordem de linha
+#             total_elementos_linha = jc[i+1]-jc[i]
+#             j = total_elementos_linha ## nao sabemos se faz diferença
+#             for ii in range(1, total_elementos_linha):
+#                 cont = cont+1
+#                 if jr[cont] != i:
+#                     x[1][i] -= x[0][jr[cont]]*aa[cont]
+#                 else:
+#                     x[1][i] += b[i]
+#                     j = cont
+#             x[1][i] /= aa[j]
+#         if np.linalg.norm(x[1] - x[0], np.inf) < tol:
+#             return x
+#         x[0] = x[1]
+#         it += 1
 
 
 
@@ -85,39 +86,62 @@ def gauss_seidel(A,b,x0,tol,N):
 
 
 def main():
-    matriz = np.loadtxt("matriz.txt", dtype="int")
-    # forma matricial do sistema Ax = b
+    # matriz = np.loadtxt("matriz.txt", dtype="int")
+    # # forma matricial do sistema Ax = b
    
-    # Matriz dos coeficientes
-    A = np.array([[3,1,-1],     
-               [-1,-4,1],  
-               [1,-2,5]],  
-               dtype="double") 
+    # # Matriz dos coeficientes
+    # A = np.array([[3,1,-1],     
+    #            [-1,-4,1],  
+    #            [1,-2,5]],  
+    #            dtype="double") 
                 
-    # Vetor dos termos constantes  
-    b = np.array([2, -10, 0], dtype="double") 
+    # # Vetor dos termos constantes  
+    # b = np.array([2, -10, 0], dtype="double") 
 
-    print("Matriz A: \n", A, "\n") 
-    print("Vetor b: \n", b, "\n") 
+    # print("Matriz A: \n", A, "\n") 
+    # print("Vetor b: \n", b, "\n") 
 
-    D = np.diag(np.diag(A))     # matriz diagonal
-    L = np.tril(A)-D            # matriz triangular inferior
-    U=np.triu(A)-D              # matriz triangular superior
+    # D = np.diag(np.diag(A))     # matriz diagonal
+    # L = np.tril(A)-D            # matriz triangular inferior
+    # U=np.triu(A)-D              # matriz triangular superior
     
-    print("Matriz D: \n", D, "\n") 
-    print("Matriz L: \n", L, "\n") 
-    print("Matriz U: \n", U, "\n") 
+    # print("Matriz D: \n", D, "\n") 
+    # print("Matriz L: \n", L, "\n") 
+    # print("Matriz U: \n", U, "\n") 
 
-    # Jacobi
-    J = -np.linalg.inv(D).dot(L+U)      # Matriz de iteração Tj
-    cJ = np.linalg.inv(D).dot(b)        # vetor de iteração cj
+    # # Jacobi
+    # J = -np.linalg.inv(D).dot(L+U)      # Matriz de iteração Tj
+    # cJ = np.linalg.inv(D).dot(b)        # vetor de iteração cj
 
-    print("Matriz J: \n", J, "\n")
-    print("Vetor cJ: \n", cJ, "\n")
+    # print("Matriz J: \n", J, "\n")
+    # print("Vetor cJ: \n", cJ, "\n")
 
-    # Gauss-Seidel
-    TG = -np.linalg.inv(L+D).dot(U)     # Matriz de iteração Tg
-    cG = np.linalg.inv(L+D).dot(b)      # vetor de iteração cG
+    # # Gauss-Seidel
+    # TG = -np.linalg.inv(L+D).dot(U)     # Matriz de iteração Tg
+    # cG = np.linalg.inv(L+D).dot(b)      # vetor de iteração cG
+
+    matrix1 = [[1, 0, 2, 0, 0],
+          [0, 3, 0, 4, 0],
+          [5, 0, 6, 0, 7],
+          [0, 0, 8, 9, 0],
+          [10, 0, 0, 0, 11]]
+
+    matrix = [[2,1],[3,4]]
+
+    aa = []
+    jc = []
+    jr = []
+
+    b = [1,-1]
+
+    jcsr.csr(matrix)
+    print(aa)
+    print(jr)
+    print(jc)
+    tol = 1000
+    N = 1
+    jcsr.teste()
+    # print(jcsr.jacobi_csr(aa, jr, jc, b, tol, N))
 
 if __name__ == '__main__':
     main()
