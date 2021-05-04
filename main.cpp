@@ -4,8 +4,9 @@
 #include <math.h>
 #include <vector>
 #include "jacobi.h"
+#include "CRSGaussSeidel.h"
 #include <fstream>
-#include<string>
+#include <string>
 
 void displayArray(std::vector<int> v){
     for(int i=0; i<v.size(); i++)
@@ -75,5 +76,6 @@ int main(int argc, char **argv) {
     displayArray(row_index);
     float b[] = {1,-1};
     jacobi_csr(values, column_index, row_index, b);
+    gauss_csr(values, column_index, row_index, b);
     return 0;
 }
