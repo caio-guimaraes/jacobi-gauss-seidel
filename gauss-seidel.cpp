@@ -2,28 +2,26 @@
 #include <stdlib.h> 
 #include <iostream>
 #include <math.h>
-#include "jacobi.h"
+// #include <bits/stdc++.h>
 
-void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vector<int> row_index, float b[]){
-    std::cout << "\nCSR JACOBI - DIAGONAL DOMINANTE" << std::endl;
+int main() {
+    std::cout << "CSR JACOBI - DIAGONAL DOMINANTE" << std::endl;
 
     //Esse algoritmo serve para Matriz AA onde a diagonal é dominante
     //Caso não seja dominante, deve-se realizar trocas entre linhas
+    
 
-
-    // float values[] = {8, 1, -1, 1, -7, 2, 2, 1, 9};     //VAA
-    // int column_index[] = {0, 1, 2, 0, 1, 2, 0, 1, 2};   //VJA
-    // int row_index[] = {0, 3, 6};                        //VIA
-    // float b[] = {8, -4, 12};
+    float values[] = {8, 1, -1, 1, -7, 2, 2, 1, 9};     //VAA
+    int column_index[] = {0, 1, 2, 0, 1, 2, 0, 1, 2};   //VJA
+    int row_index[] = {0, 3, 6};                        //VIA
+    float b[] = {8, -4, 12};
 
 
     // RESPOSTA x = {1, 2, 3}
 
-    // int valuesize = (int)sizeof(values)/sizeof(float); //Tamanho de VAA
-    int valuesize = values.size(); //Tamanho de VAA
+    int valuesize = (int)sizeof(values)/sizeof(float); //Tamanho de VAA
     printf ("valuesize = %d \n", valuesize);
-    // int n = (int)sizeof(row_index)/sizeof(float);      //Tamanho do array row_index
-    int n = row_index.size();      //Tamanho do array row_index
+    int n = (int)sizeof(row_index)/sizeof(float);      //Tamanho do array row_index
     printf ("n= rowsize = %d \n", n);
 
     float x_new[] = {0, 0, 0};                         //Valores de x na iteração k+1
@@ -66,7 +64,7 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
             }
             printf(" # ");
 
-            iter_error += abs((x_new[i] - x_old[i]));                    //Calcula o erro de x (k+1) e x(k)
+            iter_error += abs((x_new[i] - x_old[i]));                    //Calcula o erro de x (k+'1') e x(k)
         }
         for (int m = 0 ; m < n; m++) {
             x_old[m] = x_new[m];                                            // Atualiza x_k para ter os novos valores e ser usado na próxima iteração
@@ -77,4 +75,6 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
         printf ("\n ======> x1 = %lf, x2 = %lf , x3 = %lf ", x_new[0], x_new[1], x_new[2]); // Plota os resultados
         printf(" \n");
     }
+
+    return 0;
 }

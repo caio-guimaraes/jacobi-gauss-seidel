@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <iostream>
 #include <math.h>
-#include "jacobi.h"
+#include "CRSGaussSeidel.h"
 
-void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vector<int> row_index, float b[]){
+void gauss_csr(std::vector<int> values, std::vector<int> column_index, std::vector<int> row_index, float b[]){
     std::cout << "\nCSR JACOBI - DIAGONAL DOMINANTE" << std::endl;
 
     //Esse algoritmo serve para Matriz AA onde a diagonal é dominante
@@ -27,7 +27,8 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
     printf ("n= rowsize = %d \n", n);
 
     float x_new[] = {0, 0, 0};                         //Valores de x na iteração k+1
-    float x_old[] = {0, 0, 0};                         //Valores de x na iteração k
+    float x_old[] = {0, 0, 0};                         //Valores de x na iteração k+1
+    float x_oldlinha[] = {0, 0, 0};             //<<======Valores de x na iteração k
     int iter_counter = 0;                              //Contador de passos do loop while
 
     float epsilon = 0.0001;                            //Erro admissível
@@ -65,11 +66,12 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
                 }
             }
             printf(" # ");
+            x_old[i] = x_new[i];                                  //<=========Atualiza x para ser usado nas próximas iterações
 
-            iter_error += abs((x_new[i] - x_old[i]));                    //Calcula o erro de x (k+1) e x(k)
+            iter_error += abs((x_new[i] - x_oldlinha[i]));    //<==========Calcula o erro de x (k+1) e x(k)
         }
         for (int m = 0 ; m < n; m++) {
-            x_old[m] = x_new[m];                                            // Atualiza x_k para ter os novos valores e ser usado na próxima iteração
+            x_oldlinha[m] = x_new[m];                        //<====== Atualiza xoldlinha para ter os valores comparados na próxima iteração
         }
         iter_error = abs(sqrt(iter_error));                                 // Calcula o erro global da iteração - equivale a função Norm
         iter_counter++;
