@@ -33,9 +33,9 @@ int **iniatilizeMatrix(int linhas, int colunas){
     return m;
 }
 
-int **fillMatrix(char *nameFile, int *linhas, int *colunas, float *b){
+int **fillMatrix(char *nameFile, int *linhas, int *colunas){
     std::fstream myFile(nameFile, std::ios_base::in);
-    myFile >> *linhas >> *colunas >> *b;
+    myFile >> *linhas >> *colunas;
  
     int **matrix = iniatilizeMatrix(*linhas, *colunas);
     
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
     char *nameFile = argv[1];
     int linhas, colunas;
     float b;
-    int **matrix = fillMatrix(nameFile, &linhas, &colunas, &b);
+    int **matrix = fillMatrix(nameFile, &linhas, &colunas);
     printf("\n----- Matriz ------\n");
     displayMatrix(matrix, linhas, colunas);
 
