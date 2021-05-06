@@ -58,7 +58,7 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
         iter_counter++;
         printf("\n it = %d\n", iter_counter);      
         for (int i=0;i<n;i++){
-            printf (" ======> x%d = %lf ", x_new[i]); // Plota os resultados
+            printf (" ======> x%d = %lf ", i, x_new[i]); // Plota os resultados
         }         
         printf(" \n");
     }
