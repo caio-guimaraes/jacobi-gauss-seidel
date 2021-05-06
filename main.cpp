@@ -33,18 +33,17 @@ int **iniatilizeMatrix(int linhas, int colunas){
     return m;
 }
 
-int **fillMatrix(char *nameFile, int *linhas, int *colunas){
+int **fillMatrix(char *nameFile, int *linhas, int *colunas, float *b){
     std::fstream myFile(nameFile, std::ios_base::in);
-    myFile >> *linhas >> *colunas;
+    myFile >> *linhas >> *colunas >> *b;
  
     int **matrix = iniatilizeMatrix(*linhas, *colunas);
+    
     for (int i=0; i<*linhas; i++){
         for (int j=0; j<*colunas; j++)
             myFile >> matrix[i][j];      
     }
- 
-    myFile.close();
-    return matrix;
+
 }
 
 void csr(int **matrix, int linhas, int colunas, std::vector<int> &values, std::vector<int> &column_index, std::vector<int> &row_index){
@@ -62,7 +61,8 @@ void csr(int **matrix, int linhas, int colunas, std::vector<int> &values, std::v
 int main(int argc, char **argv) {
     char *nameFile = argv[1];
     int linhas, colunas;
-    int **matrix = fillMatrix(nameFile, &linhas, &colunas);
+    float b;
+    int **matrix = fillMatrix(nameFile, &linhas, &colunas, &b);
     printf("\n----- Matriz ------\n");
     displayMatrix(matrix, linhas, colunas);
 
@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     displayArray(column_index);
     std::cout << "row_index: ";
     displayArray(row_index);
-    float b[] = {1,-1};
+    float b[] = {};
     jacobi_csr(values, column_index, row_index, b);
     gauss_csr(values, column_index, row_index, b);
     return 0;
