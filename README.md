@@ -4,6 +4,14 @@
 
 ### Os métodos utilizam a técnica de armazenamento CSR
 
+### Compilação
+
+Para compilar o programa basta escrever no terminal a linha abaixo:
+
+```
+g++ main.cpp -o main
+```
+
 ### Execução
 
 Para executar o programa basta escrever no terminal a linha abaixo:
