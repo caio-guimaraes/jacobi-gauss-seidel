@@ -14,14 +14,16 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
     printf ("valuesize = %d \n", valuesize);
     int n = row_index.size();                                                   // Tamanho do array row_index
     printf ("rowsize = %d \n", n);
-
-    float x_new[] = {0, 0, 0};                                                  // Valores de x na iteração k+1
-    float x_old[] = {0, 0, 0};                                                  // Valores de x na iteração k
+                                              
+    float *x_new = (float *)malloc(sizeof(float)*n);// Valores de x na iteração k+1
+    float *x_old = (float *)malloc(sizeof(float)*n); // Valores de x na iteração k
+    for(int i=0; i < n; i++){
+        x_new[i] = 0;
+        x_old[i] = 0;
+    }
+                                                 
     int iter_counter = 0;                                                       // Contador de passos do loop while
-
-    // float epsilon = 0.0001;                                                     // Erro admissível
     float iter_error = epsilon*2;                                               // Erro na iteração
-    // int max_iter = 1000;                                                        // Máximo de iterações
 
     float s;                                                                    // Para armazenar a operação (B - aij*x[i])
     int current_row_index,  next_row_index;                                     // Valor do índice armazenado em VIA[i], Valor do próximo indice de VIA[i+1]
@@ -51,18 +53,18 @@ void jacobi_csr(std::vector<int> values, std::vector<int> column_index, std::vec
                 }
             }
             printf("###");
-
-            iter_error += abs((x_new[i] - x_old[i]));                           // Calcula o erro de x (k+1) e x(k)
+            float iter_error_aux =fabs((x_new[i] - x_old[i]))/fabs(x_new[i]);    // Calcula o erro de x (k+1) e x(k)
+            if(iter_error < iter_error_aux)
+                iter_error = iter_error_aux;                                       
         }
         for (int m = 0 ; m < n; m++) {
-        x_old[m] = x_new[m];                                                    // Atualiza x_k para ter os novos valores e ser usado na próxima iteração
+        x_old[m] = x_new[m];                                                     // Atualiza x_k para ter os novos valores e ser usado na próxima iteração
         }
-        iter_error = abs(sqrt(iter_error));                                     // Calcula o erro global da iteração - equivale a função Norm
         iter_counter++;
 
         printf("\nit = %d ======> ", iter_counter);                                 
          for (int i=0;i<n;i++){
-            printf (" x%d = %lf ",i, x_new[i]);                                 // Plota os resultados
+        printf (" x%d = %lf ",i, x_new[i]);                                     // Plota os resultados
         }
         printf("\n");
     }

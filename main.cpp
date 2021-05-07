@@ -68,9 +68,6 @@ int main(int argc, char **argv) {
     float epsilon = atof(argv[2]);                                                     // Erro admissível
     int max_iter = atoi(argv[3]);                                                      // Máximo de iterações
 
-    std::cout << "epsilon: " << epsilon << "\n";
-    std::cout << "max_iter: " << max_iter << "\n";
-
     int linhas, colunas;
     std::vector<float> b;
 
@@ -95,5 +92,6 @@ int main(int argc, char **argv) {
 
     jacobi_csr(values, column_index, row_index, b, epsilon, max_iter);
     gauss_csr(values, column_index, row_index, b,  epsilon, max_iter);
+
     return 0;
 }

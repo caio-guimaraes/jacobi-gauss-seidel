@@ -15,9 +15,14 @@ void gauss_csr(std::vector<int> values, std::vector<int> column_index, std::vect
     int n = row_index.size();                                                   // Tamanho do array row_index
     printf ("rowsize = %d \n", n);
 
-    float x_new[] = {0, 0, 0};                                                  // Valores de x na iteração k+1
-    float x_old[] = {0, 0, 0};                                                  // Valores de x na iteração k+1
-    float x_oldlinha[] = {0, 0, 0};                                             // Valores de x na iteração k
+    float *x_new = (float *)malloc(sizeof(float)*n);// Valores de x na iteração k+1
+    float *x_old = (float *)malloc(sizeof(float)*n); // Valores de x na iteração k
+    float *x_oldlinha = (float *)malloc(sizeof(float)*n); // Valores de x na iteração k
+    for(int i=0; i < n; i++){
+        x_new[i] = 0;
+        x_old[i] = 0;
+        x_oldlinha[i] = 0;
+    }                                           // Valores de x na iteração k
     int iter_counter = 0;                                                       // Contador de passos do loop while
 
     float iter_error = epsilon*2;                                               // Erro na iteração
@@ -51,13 +56,16 @@ void gauss_csr(std::vector<int> values, std::vector<int> column_index, std::vect
             }
             printf("###");
             x_old[i] = x_new[i];                                                // Atualiza x para ser usado nas próximas iterações
+            float iter_error_aux =fabs((x_new[i] - x_oldlinha[i]))/fabs(x_new[i]);
+            if(iter_error < iter_error_aux)
+                iter_error = iter_error_aux;  
 
-            iter_error += abs((x_new[i] - x_oldlinha[i]));                      // Calcula o erro de x (k+1) e x(k)
+            // iter_error += fabs((x_new[i] - x_oldlinha[i]));                      // Calcula o erro de x (k+1) e x(k)
         }
         for (int m = 0 ; m < n; m++) {
             x_oldlinha[m] = x_new[m];                                           // Atualiza xoldlinha para ter os valores comparados na próxima iteração
         }
-        iter_error = abs(sqrt(iter_error));                                     // Calcula o erro global da iteração - equivale a função Norm
+        // iter_error = fabs(sqrt(iter_error));                                     // Calcula o erro global da iteração - equivale a função Norm
         iter_counter++;
 
         printf("\nit = %d ======> ", iter_counter);                                 
